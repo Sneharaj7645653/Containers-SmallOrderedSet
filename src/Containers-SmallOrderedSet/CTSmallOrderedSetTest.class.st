@@ -1,6 +1,6 @@
 Class {
 	#name : #CTSmallOrderedSetTest,
-	#superclass : #GRSetTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'collection'
 	],

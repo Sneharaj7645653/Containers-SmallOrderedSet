@@ -1,5 +1,5 @@
 "
-I am an implementation of a dictionary. Compared to other dictionaries I am very efficient for small sizes, speed- and space-wise. I also mantain the order in which elements are added when iterating.
+I am an implementation of an ordered set. Compared to other sets I am very efficient for small sizes, speed- and space-wise. I also mantain the order in which elements are added when iterating.
 "
 Class {
 	#name : #CTSmallOrderedSet,
