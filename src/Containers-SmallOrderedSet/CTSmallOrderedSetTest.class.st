@@ -83,6 +83,45 @@ CTSmallOrderedSetTest >> testDo [
 ]
 
 { #category : 'testing' }
+CTSmallOrderedSetTest >> testFindIndexFor [ 
+    | indexAbsent indexFirst indexMiddle indexLast indexSingle indexNegative indexSpecial |
+
+    "Case 1: Empty Collection"
+    self assert: (collection findIndexFor: 42) equals: 0.
+
+    "Case 2: Single Element Collection"
+    collection add: 100.
+    indexSingle := collection findIndexFor: 100.
+    self assert: indexSingle equals: 1.
+
+    "Case 3: Standard Ordered Collection"
+    collection addAll: #(10 20 30 40 50).
+    indexFirst := collection findIndexFor: 10.
+    indexMiddle := collection findIndexFor: 30.
+    indexLast := collection findIndexFor: 50.
+
+    "Assert correct indexes"
+    self assert: indexFirst equals: 2.  "Since 100 is first now"
+    self assert: indexMiddle equals: 4.
+    self assert: indexLast equals: 6.
+
+    "Case 4: Searching for a Non-Existent Element"
+    indexAbsent := collection findIndexFor: 99.
+    self assert: indexAbsent equals: 0.
+
+    "Case 5: Handling Negative Numbers"
+    collection add: -5.
+    indexNegative := collection findIndexFor: -5.
+    self assert: indexNegative equals: collection size.
+
+    "Case 6: Handling Special Characters"
+    collection add: '$%#@!'.
+    indexSpecial := collection findIndexFor: '$%#@!'.
+    self assert: indexSpecial equals: collection size.
+
+]
+
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testGrow [ 
     | initialCapacity elementsBeforeGrow elementsAfterGrow expectedSize sizeAfterDuplicates zeroCapacitySet |
 
