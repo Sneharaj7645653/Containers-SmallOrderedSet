@@ -83,6 +83,81 @@ CTSmallOrderedSetTest >> testDo [
 ]
 
 { #category : 'testing' }
+CTSmallOrderedSetTest >> testGrow [ 
+    | initialCapacity elementsBeforeGrow elementsAfterGrow expectedSize sizeAfterDuplicates zeroCapacitySet |
+
+    "Create a small set with a fixed capacity"
+    collection := CTSmallOrderedSet new: 2.  "Initial capacity = 2"
+    initialCapacity := 2.
+    "Add elements up to the initial limit"
+    collection add: 1.
+    collection add: 2.
+
+    "Store elements before triggering grow"
+    elementsBeforeGrow := collection asArray.
+
+    "Ensure that collection reached its initial capacity"
+    self assert: collection size equals: initialCapacity.
+
+    "Add one more element to force growth"
+    collection add: 3.
+
+    "Store elements after growth"
+    elementsAfterGrow := collection asArray.
+
+    "Calculate expected size (since we added 3 unique elements)"
+    expectedSize := 3.
+
+    "Assert that the collection size increased"
+    self assert: (collection size > initialCapacity).
+
+    "Assert that the collection size is exactly what we expect"
+    self assert: collection size equals: expectedSize.
+
+    "Verify all original elements are still in order"
+    self assert: (elementsAfterGrow copyFrom: 1 to: elementsBeforeGrow size) equals: elementsBeforeGrow.
+
+    "Ensure the newly added element exists"
+    self assert: (collection includes: 3).
+
+    "Store size before attempting to add duplicates"
+    sizeAfterDuplicates := collection size.
+
+    "Try adding duplicates"
+    collection add: 2.  "Duplicate"
+    collection add: 1.  "Duplicate"
+    collection add: 3.  "Duplicate"
+
+    "Assert that size does not increase when adding duplicates"
+    self assert: collection size equals: sizeAfterDuplicates.
+
+    "Ensure that duplicates were not added and order remains unchanged"
+    self assert: (collection asArray) equals: #(1 2 3).
+
+    "Edge Case: Force another growth by adding new elements"
+    collection add: 4.
+    collection add: 5.
+    collection add: 6.  "Should trigger another growth"
+
+    "Verify the collection still maintains order after multiple growths"
+    self assert: (collection asArray) equals: #(1 2 3 4 5 6).
+
+    "Test Zero-Capacity Initialization"
+    zeroCapacitySet := CTSmallOrderedSet new: 0.  "Initially empty with no preallocated space"
+    self assert: zeroCapacitySet isEmpty.  "Ensure it's empty initially"
+
+    "Ensure elements can be added and size increases dynamically"
+    zeroCapacitySet add: 10.
+    zeroCapacitySet add: 20.
+    zeroCapacitySet add: 30.
+
+    "Verify growth occurs from zero capacity"
+    self assert: zeroCapacitySet size equals: 3.
+    self assert: (zeroCapacitySet asArray) equals: #(10 20 30).
+
+]
+
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testIncludes [
 	self deny: (collection includes: 0).
 	collection add: 0.
