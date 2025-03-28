@@ -99,6 +99,44 @@ CTSmallOrderedSetTest >> testIsEmpty [
 ]
 
 { #category : 'testing' }
+CTSmallOrderedSetTest >> testPrivateAdd [ 
+    | collectionSet tableBefore tableAfter |
+
+    "Create a set with a small initial capacity to trigger `privateAdd:` execution sooner"
+    collectionSet := CTSmallOrderedSet new: 2.
+
+    "Ensure the collection is empty initially"
+    self assert: collectionSet isEmpty.
+
+    "Add two elements - should NOT trigger `grow`, but will invoke `privateAdd:`"
+    collectionSet add: 1.
+    collectionSet add: 2.
+
+    "Capture the table size before a forced growth"
+    tableBefore := collectionSet size.
+
+    "Force `privateAdd:` to trigger growth by adding a third element"
+    collectionSet add: 3.
+
+    "Verify that the collection has grown as expected"
+    tableAfter := collectionSet size.
+    self assert: tableAfter > tableBefore.  "Ensures `grow` was called by `privateAdd:`"
+
+    "Verify that all added elements are present and maintain their order"
+    self assert: (collectionSet asArray) equals: #(1 2 3).
+
+    "Ensure `privateAdd:` does not remove or overwrite existing elements"
+    self assert: (collectionSet includes: 1).
+    self assert: (collectionSet includes: 2).
+    self assert: (collectionSet includes: 3).
+
+    "Verify that `privateAdd:` alone does not handle duplicates (handled by `add:`)"
+    collectionSet add: 2.  "Attempt to add a duplicate"
+    self assert: collectionSet size equals: 3.  "Size remains unchanged as `add:` prevents duplicates"
+
+]
+
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testRemove [
 	collection add: 1.
 	self assert: (collection remove: 1) equals: 1.
