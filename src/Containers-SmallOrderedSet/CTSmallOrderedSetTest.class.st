@@ -99,6 +99,45 @@ CTSmallOrderedSetTest >> testIsEmpty [
 ]
 
 { #category : 'testing' }
+CTSmallOrderedSetTest >> testPostCopy [ 
+    | original clonedSet emptySet clonedEmptySet |
+
+    "Create an instance and add elements"
+    original := CTSmallOrderedSet new: 3.
+    original addAll: #(1 2 3).
+
+    "Create a cloned set"
+    clonedSet := original copy.
+
+    "Ensure the cloned set has the same elements"
+    self assert: (clonedSet asArray) equals: #(1 2 3).
+
+    "Modify the original and ensure the clone remains unchanged"
+    original add: 4.
+    self deny: (clonedSet includes: 4).
+
+    "Modify the cloned set and ensure the original remains unchanged"
+    clonedSet add: 5.
+    self deny: (original includes: 5).
+
+    "Test cloning an empty set"
+    emptySet := CTSmallOrderedSet new: 0.
+    clonedEmptySet := emptySet copy.
+    self assert: clonedEmptySet isEmpty.
+
+    "Test that cloning does not introduce duplicates"
+    original add: 2.  "Duplicate"
+    self assert: original size equals: 4.  "Ensuring duplicate was not added"
+    self assert: clonedSet size equals: 4.  "Ensuring clone remains unchanged"
+
+    "Ensure deep copy: Modify internal table and verify no effect"
+    clonedSet := original copy.
+    original add: 6.
+    self deny: (clonedSet includes: 6).
+
+]
+
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testPrivateAdd [ 
     | collectionSet tableBefore tableAfter |
 
