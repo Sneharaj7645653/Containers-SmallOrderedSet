@@ -83,6 +83,41 @@ CTSmallOrderedSetTest >> testDo [
 ]
 
 { #category : 'testing' }
+CTSmallOrderedSetTest >> testErrorNotFound [ 
+    | collectionSet emptyCollection errorFlagEmpty errorFlagNonExistent errorFlagAlreadyRemoved |
+
+    "Create an instance of CTSmallOrderedSet"
+    collectionSet := CTSmallOrderedSet new: 2.
+
+    "Try removing an element from an empty set"
+    emptyCollection := CTSmallOrderedSet new: 0.
+    errorFlagEmpty := false.
+    ([
+        emptyCollection remove: 42. "Removing from empty set"
+    ]) on: Error do: [ :ex | errorFlagEmpty := true. ].
+    self assert: errorFlagEmpty.  "Ensure an error is raised for empty set"
+
+    "Try removing a non-existent element from a non-empty set"
+    collectionSet add: 1.
+    collectionSet add: 2.
+    errorFlagNonExistent := false.
+    ([
+        collectionSet remove: 999.  "Non-existent element"
+    ]) on: Error do: [ :ex | errorFlagNonExistent := true. ].
+    self assert: errorFlagNonExistent.  "Ensure an error is raised for non-existent element"
+
+    "Try removing the same element twice"
+    collectionSet remove: 1.
+    errorFlagAlreadyRemoved := false.
+    ([
+        collectionSet remove: 1.  "Already removed"
+    ]) on: Error do: [ :ex | errorFlagAlreadyRemoved := true. ].
+    self assert: errorFlagAlreadyRemoved.  "Ensure an error is raised for re-removal"
+
+
+]
+
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testFindIndexFor [ 
     | indexAbsent indexFirst indexMiddle indexLast indexSingle indexNegative indexSpecial |
 
