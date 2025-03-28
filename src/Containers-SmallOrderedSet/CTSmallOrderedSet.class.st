@@ -81,14 +81,14 @@ CTSmallOrderedSet >> findIndexFor: aKey [
 	^ 0
 ]
 
-{ #category : 'private ' }
+{ #category : 'private' }
 CTSmallOrderedSet >> grow [
-	| newTable |
-	"#replaceFrom:to:with:startingAt: would be better but not portable"
-	newTable := Array new: 2 * size.
-	1 to: size do: [ :index |
-		newTable at: index put: (table at: index) ].
-	table := newTable
+	| newTable newSize |
+    newSize := (table isEmpty) ifTrue: [1] ifFalse: [2 * table size]. "Ensure it grows from 0"
+    newTable := Array new: newSize.
+    1 to: size do: [ :index |
+        newTable at: index put: (table at: index) ].
+    table := newTable
 ]
 
 { #category : 'testing' }
