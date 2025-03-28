@@ -90,6 +90,41 @@ CTSmallOrderedSetTest >> testIncludes [
 ]
 
 { #category : 'testing' }
+CTSmallOrderedSetTest >> testInitialize [ 
+    | defaultSet customSet zeroCapacitySet initialCapacity |
+
+    "Test default initialization"
+    defaultSet := CTSmallOrderedSet new.
+    self assert: defaultSet isEmpty.
+    self assert: defaultSet size equals: 0. "Ensure it's empty upon creation"
+
+    "Test custom capacity initialization"
+    initialCapacity := 5.
+    customSet := CTSmallOrderedSet new: initialCapacity.
+    self assert: customSet isEmpty.
+
+    "Ensure elements can be added up to initial capacity"
+    customSet addAll: (1 to: initialCapacity).
+    self assert: customSet size equals: initialCapacity.
+
+    "Ensure set expands beyond initial capacity"
+    customSet add: initialCapacity + 1.
+    self assert: customSet size equals: initialCapacity + 1.
+
+    "Test zero-capacity initialization (should still allow adding elements)"
+    zeroCapacitySet := CTSmallOrderedSet new: 0.
+    self assert: zeroCapacitySet isEmpty.  "Initially empty"
+
+    "Ensure elements can be added even if initially zero capacity"
+    zeroCapacitySet add: 1.
+    zeroCapacitySet add: 2.
+    self assert: zeroCapacitySet size equals: 2.
+    self assert: (zeroCapacitySet includes: 1).
+    self assert: (zeroCapacitySet includes: 2).
+
+]
+
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testIsCollection [ 
     | smallOrderedSet emptySet notCollectionObject |
 
