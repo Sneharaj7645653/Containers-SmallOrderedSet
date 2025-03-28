@@ -119,6 +119,70 @@ CTSmallOrderedSetTest >> testRemoveIfAbsent [
 ]
 
 { #category : 'testing' }
+CTSmallOrderedSetTest >> testRemoveIndex [ 
+
+	| collectionSet |
+	"Create a set and add some elements"
+	collectionSet := CTSmallOrderedSet new: 5.
+	collectionSet add: 1.
+	collectionSet add: 2.
+	collectionSet add: 3.
+	collectionSet add: 4.
+
+	"Remove an element by index"
+	collectionSet removeIndex: 2.
+
+
+	"Test that the collection size decreased"
+	self assert: collectionSet size equals: 3.
+	self assert: (collectionSet asArray) equals: #( 1 3 4 ).
+	"Test that the removed element is no longer in the collection"
+	self deny: (collectionSet includes: 2).
+
+	"Test removing from an empty set"
+	collectionSet := CTSmallOrderedSet new: 0.
+	self should: [ collectionSet removeIndex: 1 ] raise: Error.
+
+	"Test removing from an empty set with error message"
+	collectionSet := CTSmallOrderedSet new: 0.
+
+
+	"Test removing the first index"
+	collectionSet := CTSmallOrderedSet new: 3.
+	collectionSet add: 1.
+	collectionSet add: 2.
+	collectionSet add: 3.
+	collectionSet removeIndex: 1.
+	self assert: collectionSet size equals: 2.
+	self assert: (collectionSet asArray) equals: #( 2 3 ).
+
+	"Test removing the last index"
+	collectionSet := CTSmallOrderedSet new: 3.
+	collectionSet add: 1.
+	collectionSet add: 2.
+	collectionSet add: 3.
+	collectionSet removeIndex: 3.
+	self assert: collectionSet size equals: 2.
+	self assert: (collectionSet asArray) equals: #( 1 2 ).
+
+	"Test removing an index out of bounds"
+	collectionSet := CTSmallOrderedSet new: 3.
+	collectionSet add: 1.
+	collectionSet add: 2.
+	collectionSet add: 3.
+	self should: [ collectionSet removeIndex: 4 ] raise: Error.
+
+	"Test removing the only element in the set"
+	collectionSet := CTSmallOrderedSet new: 1.
+	collectionSet add: 1.
+	collectionSet removeIndex: 1.
+	self assert: collectionSet isEmpty.
+	self assert: collectionSet size equals: 0
+
+
+]
+
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testSize [
 	self assert: collection size equals: 0.
 	collection addAll: #(2 1 1).
