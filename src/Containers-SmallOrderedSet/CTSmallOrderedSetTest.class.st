@@ -1,24 +1,25 @@
 Class {
-	#name : #CTSmallOrderedSetTest,
-	#superclass : #TestCase,
+	#name : 'CTSmallOrderedSetTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'collection'
 	],
-	#category : #'Containers-SmallOrderedSet'
+	#category : 'Containers-SmallOrderedSet',
+	#package : 'Containers-SmallOrderedSet'
 }
 
-{ #category : #configuration }
+{ #category : 'configuration' }
 CTSmallOrderedSetTest >> collectionClass [
 	^ CTSmallOrderedSet
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 CTSmallOrderedSetTest >> setUp [
 	super setUp.
 	collection := CTSmallOrderedSet new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testAdd [
 	| object |
 	object := Object new.
@@ -28,7 +29,7 @@ CTSmallOrderedSetTest >> testAdd [
 	self assert: (collection add: object) equals: object
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testAddAll [
 	collection addAll: #(2 1 1).
 	self assert: collection size equals: 2.
@@ -36,26 +37,26 @@ CTSmallOrderedSetTest >> testAddAll [
 	self assert: (collection includes: 2)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testAddAllKeepsOrder [
 	collection addAll: #(2 1 1 3 4 5 5 5 6).
 	self assert: collection size equals: 6.
 	self assert: collection asArray equals: #(2 1 3 4 5 6).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testAsArray [
 	collection addAll: #(2 1 1).
 	self assert: collection asArray equals: #(2 1).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testAsArrayWithStrangeOrder [
 	collection addAll: #(2 1 3 2 1).
 	self assert: collection asArray equals: #(2 1 3).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testCopy [
 	| copy |
 	collection add: 1.
@@ -69,7 +70,7 @@ CTSmallOrderedSetTest >> testCopy [
 	self deny: (copy includes: 2).
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testDo [
 	| seen |
 	collection addAll: #(2 1 1).
@@ -81,14 +82,14 @@ CTSmallOrderedSetTest >> testDo [
 	self assert: (seen at: 2) equals: 1
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testIncludes [
 	self deny: (collection includes: 0).
 	collection add: 0.
 	self assert: (collection includes: 0)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testIsEmpty [
 	self assert: collection isEmpty.
 	collection add: 1.
@@ -97,14 +98,14 @@ CTSmallOrderedSetTest >> testIsEmpty [
 	self assert: collection isEmpty
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testRemove [
 	collection add: 1.
 	self assert: (collection remove: 1) equals: 1.
 	self should: [ collection remove: 1 ] raise: Error
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testRemoveIfAbsent [
 	| absent |
 	collection add: 1.
@@ -117,7 +118,7 @@ CTSmallOrderedSetTest >> testRemoveIfAbsent [
 	self assert: absent.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 CTSmallOrderedSetTest >> testSize [
 	self assert: collection size equals: 0.
 	collection addAll: #(2 1 1).
